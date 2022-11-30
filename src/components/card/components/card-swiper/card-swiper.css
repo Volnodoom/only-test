@@ -1,0 +1,8 @@
+.custom-swiper-property {
+  padding: 0 130px 0 20px;
+  margin-bottom: 78px;
+}
+
+.swiper-wrapper > :not(.swiper-slide-active) {
+  opacity: 0.4;
+}
