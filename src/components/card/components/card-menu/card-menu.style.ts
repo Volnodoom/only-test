@@ -12,6 +12,7 @@ const Menu = styled.div`
   display: flex;
 
   @media (min-width: 1440px) {
+    display: block;
     ${setDimensions(530)};
     top: 215px;
     left: 452px;
@@ -185,8 +186,8 @@ const MenuItemTitle = styled.h3<MenuTitleType>`
         display: block;
         margin: 0;
         position: absolute;
-        top: -14px;
-        left: 47px;
+        top: 19px;
+        left: 444px;
 
         min-width: 100px;
         ${({ theme }) => setFontValues(theme.font.medium, 30, 700)};

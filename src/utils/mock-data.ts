@@ -27,7 +27,7 @@ export const MockData: MockDataType[] = [
     ]
   },
   {
-    field: 'Истории России 2',
+    field: 'Россия',
     scope: [
       {
         year: 1547,
@@ -60,7 +60,7 @@ export const MockData: MockDataType[] = [
     ],
   },
   {
-    field: 'Истории России',
+    field: 'Россия 2',
     scope: [
       {
         year: 1547,
@@ -93,7 +93,7 @@ export const MockData: MockDataType[] = [
     ],
   },
   {
-    field: 'История компьютерных игр',
+    field: 'Компьютерные игры',
     scope: [
       {
         year: 1991,
@@ -118,7 +118,7 @@ export const MockData: MockDataType[] = [
     ],
   },
   {
-    field: 'Биологии',
+    field: 'Биология',
     scope: [
       {
         year: 1590,
@@ -147,7 +147,7 @@ export const MockData: MockDataType[] = [
     ],
   },
   {
-    field: 'Психологии',
+    field: 'Психология',
     scope: [
       {
         year: 1879,

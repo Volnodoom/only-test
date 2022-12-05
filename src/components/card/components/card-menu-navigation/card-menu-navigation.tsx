@@ -1,20 +1,34 @@
-import { useState } from "react";
-import { ONE } from "utils/const";
+import { ONE, ZERO } from "utils/const";
 import { checkTheNumberValue } from "utils/utils";
 import { MockData } from "utils/mock-data";
 import * as S from "./card-menu-navigation.style";
 
 type CardMenuNavigationType = {
-  activeIndexNumber: number,
+  activeMenuSection: number,
+  setMenuSection: React.Dispatch<React.SetStateAction<number>>,
 }
 
-const CardMenuNavigation = ({activeIndexNumber}: CardMenuNavigationType) => {
-  const [currentMenuPage, setCurrentMenuPage] = useState(ONE);
+const CardMenuNavigation = ({activeMenuSection, setMenuSection}: CardMenuNavigationType) => {
+  const currentMenuPage = activeMenuSection + ONE;
+  const totalMenuPagesNumber = MockData.length;
 
-  const totalMenuPagesNumber = MockData[activeIndexNumber].scope.length;
+  const handlePrevClick = () => {
+    if(activeMenuSection === ZERO) {
+      return;
+    }
 
-  const handlePrevClick = () => {}
-  const handleNextClick = () => {}
+    const value = activeMenuSection - ONE;
+    setMenuSection(value);
+  };
+
+  const handleNextClick = () => {
+    if(activeMenuSection === totalMenuPagesNumber - ONE) {
+      return;
+    }
+
+    const value = activeMenuSection + ONE;
+    setMenuSection(value);
+  };
 
   return(
     <S.MenuNavigation>

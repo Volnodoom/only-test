@@ -1,37 +1,71 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CombinedHTMLSwiper } from 'types/style.type';
-import { ONE, ZERO } from 'utils/const';
+import { ONE, SLIDER_LIMIT, ZERO } from 'utils/const';
 import { MockData } from 'utils/mock-data';
 import * as S from './card.style';
 import { CardMenu, CardMenuNavigation, CardSwiper } from './components/components';
 
 const Card = () => {
   const swiperElement = useRef<CombinedHTMLSwiper | null>(null);
-  const [paginationElementsNumber, setPaginationElementsNumber] = useState(ZERO);
-  const [activePaginationNumber, setActivePaginationNumber] = useState(ONE);
+  const [currentMenuSection, setCurrentMenuSection] = useState(ZERO);
+  const [isPrevButtonVisible, setIsPrevButtonVisible] = useState(false);
+  const [isNextButtonVisible, setIsNextButtonVisible] = useState(true);
 
-  // const startDate = MockData
+  const sortAscending = MockData[currentMenuSection]
+    .scope
+    .slice()
+    .sort((valueA, valueB) => valueA.year - valueB.year);
+
+  const startDate = sortAscending[0].year;
+  const endDate = sortAscending.at(-ONE)?.year;
+
+  const numberOfSlides = MockData[currentMenuSection].scope.length;
+
+  if(numberOfSlides <= SLIDER_LIMIT) {
+    setIsPrevButtonVisible(false);
+    setIsNextButtonVisible(false);
+  }
 
   const handleNavigationPrevClick = () => {
     swiperElement.current && swiperElement.current.swiper.slidePrev();
+
+    if(swiperElement.current && (swiperElement.current.swiper.activeIndex === 0)) {
+      setIsPrevButtonVisible(false);
+    }
+
+    if(
+        numberOfSlides > SLIDER_LIMIT
+        &&
+        swiperElement.current
+        &&
+        swiperElement.current.swiper.activeIndex < (numberOfSlides - SLIDER_LIMIT)
+      ) {
+      setIsNextButtonVisible(true);
+    }
   }
 
   const handleNavigationNextClick = () => {
-    swiperElement.current && swiperElement.current.swiper.slideNext()
+    swiperElement.current && swiperElement.current.swiper.slideNext();
+
+    if(swiperElement.current && (swiperElement.current.swiper.activeIndex > 0)) {
+      setIsPrevButtonVisible(true);
+    }
+
+    if(
+        swiperElement.current
+        && swiperElement.current.swiper.activeIndex === (numberOfSlides - SLIDER_LIMIT)
+      ) {
+      setIsNextButtonVisible(false);
+    }
   }
-
-  // const handlePaginationChange = (evt: ChangeEvent) => {
-  //   const elementNumber = (evt.target as HTMLInputElement).value;
-  //   setActivePaginationNumber(Number(elementNumber));
-
-  //   swiperElement.current && swiperElement.current.swiper.slideTo(Number(elementNumber) - ONE);
-  // }
 
   return (
     <S.CardBox>
       <S.CardTopic>Исторические<br/>даты</S.CardTopic>
       <S.CardRange>
-        <S.CardRangeStart>2015</S.CardRangeStart>&nbsp;<S.CardRangeGap>&nbsp;</S.CardRangeGap><S.CardRangeEnd>2022</S.CardRangeEnd>
+        <S.CardRangeStart>{startDate}</S.CardRangeStart>
+        &nbsp;<S.CardRangeGap>&nbsp;</S.CardRangeGap>
+        <S.CardRangeEnd>{endDate}</S.CardRangeEnd>
       </S.CardRange>
 
       <S.CardDecoration>
@@ -40,19 +74,23 @@ const Card = () => {
       </S.CardDecoration>
 
       <CardSwiper
-        activeIndexNumber={1}
+        activeMenuSection={currentMenuSection}
         swiperRef={swiperElement}
-        setPaginationNumber={setActivePaginationNumber}
-        hasLeftSwiper
-        hasRightSwiper
+        hasLeftSwiper={isPrevButtonVisible}
+        hasRightSwiper={isNextButtonVisible}
       />
 
-      <CardMenuNavigation activeIndexNumber={1}/>
-      <CardMenu activeIndexNumber={1}/>
+      <CardMenuNavigation activeMenuSection={currentMenuSection} setMenuSection={setCurrentMenuSection}/>
+      <CardMenu activeMenuSection={currentMenuSection} setMenuSection={setCurrentMenuSection}/>
 
       <S.CardSliderSwiper>
-        <S.CardSliderSwiperLeftButton onClick={handleNavigationPrevClick}/>
-        <S.CardSliderSwiperRightButton onClick={handleNavigationNextClick}/>
+        {
+          isPrevButtonVisible ? <S.CardSliderSwiperLeftButton onClick={handleNavigationPrevClick}/> : <p></p>
+        }
+
+        {
+          isNextButtonVisible ? <S.CardSliderSwiperRightButton onClick={handleNavigationNextClick}/> : <p></p>
+        }
       </S.CardSliderSwiper>
 
     </S.CardBox>
