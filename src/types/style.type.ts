@@ -36,3 +36,8 @@ export type MockDataType = {
   field: string,
   scope: SingleInfo[],
 }
+
+export type RefObjectType = {
+  rotateCircleBack: () => void,
+  rotateCircleForward: () => void,
+}

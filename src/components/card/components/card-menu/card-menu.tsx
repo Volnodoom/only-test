@@ -1,4 +1,5 @@
-import { AnimationEvent, ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, forwardRef, Ref, useEffect, useImperativeHandle, useState } from "react";
+import { RefObjectType } from "types/style.type";
 import { COUNTER_CLOCK_POSITIVE_ROTATION_LIMIT, ANIMATION_TIME, MenuSectionClassNames, MENU_LIMIT, ONE, PositionValues, SIXTY_DEGREE, COUNTER_CLOCK_NEGATIVE_ROTATION_LIMIT } from "utils/const";
 import { MockData } from "utils/mock-data";
 import { reversePositionValue } from "utils/utils";
@@ -9,11 +10,11 @@ type CardMenuType = {
   setMenuSection: React.Dispatch<React.SetStateAction<number>>,
 }
 
-const CardMenu = ({activeMenuSection, setMenuSection}: CardMenuType) => {
+const CardMenu = forwardRef(({activeMenuSection, setMenuSection}: CardMenuType, ref: Ref<RefObjectType>) => {
   const [rotationStart, setRotationStart] = useState(0);
   const [rotationEnd, setRotationEnd] = useState(0);
   const [timeAnimation, setTimeAnimation] = useState(0);
-  const [prevActiveMenuNumber, setPrevActiveMenuNumber] = useState(0);
+  const [prevActiveMenuNumber, setPrevActiveMenuNumber] = useState(1);
   const [isMenuTitleVisible, setIsMenuTitleVisible] = useState(true);
   const menuElementsNumber = MockData.length;
   let activeMenuNumber = activeMenuSection + ONE;
@@ -28,6 +29,24 @@ const CardMenu = ({activeMenuSection, setMenuSection}: CardMenuType) => {
     return () => document.removeEventListener('animationend', handleAnimationEnd);
   })
 
+  useImperativeHandle(ref, () => ({
+    rotateCircleBack: () => {
+      setRotationStart(rotationEnd);
+      setRotationEnd(prevValue => prevValue + SIXTY_DEGREE);
+      setTimeAnimation(ANIMATION_TIME);
+      setPrevActiveMenuNumber(prevValue => --prevValue);
+      setMenuSection(prevValue => --prevValue);
+
+    },
+    rotateCircleForward: () => {
+      setRotationStart(rotationEnd);
+      setRotationEnd(prevValue => prevValue - SIXTY_DEGREE);
+      setTimeAnimation(ANIMATION_TIME);
+      setPrevActiveMenuNumber(prevValue => ++prevValue);
+      setMenuSection(prevValue => ++prevValue);
+    }
+  }))
+
   const handleMenuChange = (evt: ChangeEvent) => {
     const elementNumber = (evt.target as HTMLInputElement).value;
     const indexNumber = Number(elementNumber) - ONE;
@@ -35,7 +54,6 @@ const CardMenu = ({activeMenuSection, setMenuSection}: CardMenuType) => {
 
     setMenuSection(indexNumber);
     setIsMenuTitleVisible(false);
-
 
     activeMenuNumber = Number(elementNumber);
     const positiveDifference = activeMenuNumber - prevActiveMenuNumber;
@@ -139,6 +157,6 @@ const CardMenu = ({activeMenuSection, setMenuSection}: CardMenuType) => {
     <S.MenuItemTitle $isChecked={isMenuTitleVisible}>{MockData[activeMenuSection].field}</S.MenuItemTitle>
   </S.Menu>
   )
-}
+})
 
 export default CardMenu;

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { CombinedHTMLSwiper } from 'types/style.type';
+import { useRef, useState } from 'react';
+import { CombinedHTMLSwiper, RefObjectType } from 'types/style.type';
 import { ONE, SLIDER_LIMIT, ZERO } from 'utils/const';
 import { MockData } from 'utils/mock-data';
 import * as S from './card.style';
@@ -7,6 +7,7 @@ import { CardMenu, CardMenuNavigation, CardSwiper } from './components/component
 
 const Card = () => {
   const swiperElement = useRef<CombinedHTMLSwiper | null>(null);
+  const cardMenuRef = useRef<RefObjectType | null>(null);
   const [currentMenuSection, setCurrentMenuSection] = useState(ZERO);
   const [isPrevButtonVisible, setIsPrevButtonVisible] = useState(false);
   const [isNextButtonVisible, setIsNextButtonVisible] = useState(true);
@@ -80,8 +81,17 @@ const Card = () => {
         hasRightSwiper={isNextButtonVisible}
       />
 
-      <CardMenuNavigation activeMenuSection={currentMenuSection} setMenuSection={setCurrentMenuSection}/>
-      <CardMenu activeMenuSection={currentMenuSection} setMenuSection={setCurrentMenuSection}/>
+      <CardMenuNavigation
+        activeMenuSection={currentMenuSection}
+        setMenuSection={setCurrentMenuSection}
+        refWithRotationMethods={cardMenuRef}
+      />
+      <CardMenu
+        ref={cardMenuRef}
+        activeMenuSection={currentMenuSection}
+        setMenuSection={setCurrentMenuSection}
+
+      />
 
       <S.CardSliderSwiper>
         {

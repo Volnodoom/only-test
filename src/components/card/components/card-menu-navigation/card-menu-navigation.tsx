@@ -2,13 +2,15 @@ import { ONE, ZERO } from "utils/const";
 import { checkTheNumberValue } from "utils/utils";
 import { MockData } from "utils/mock-data";
 import * as S from "./card-menu-navigation.style";
+import { RefObjectType } from "types/style.type";
 
 type CardMenuNavigationType = {
   activeMenuSection: number,
   setMenuSection: React.Dispatch<React.SetStateAction<number>>,
+  refWithRotationMethods: React.MutableRefObject<RefObjectType | null>,
 }
 
-const CardMenuNavigation = ({activeMenuSection, setMenuSection}: CardMenuNavigationType) => {
+const CardMenuNavigation = ({activeMenuSection, setMenuSection, refWithRotationMethods}: CardMenuNavigationType) => {
   const currentMenuPage = activeMenuSection + ONE;
   const totalMenuPagesNumber = MockData.length;
 
@@ -18,7 +20,8 @@ const CardMenuNavigation = ({activeMenuSection, setMenuSection}: CardMenuNavigat
     }
 
     const value = activeMenuSection - ONE;
-    setMenuSection(value);
+    // setMenuSection(value);
+    refWithRotationMethods.current && refWithRotationMethods.current.rotateCircleBack();
   };
 
   const handleNextClick = () => {
@@ -27,7 +30,8 @@ const CardMenuNavigation = ({activeMenuSection, setMenuSection}: CardMenuNavigat
     }
 
     const value = activeMenuSection + ONE;
-    setMenuSection(value);
+    // setMenuSection(value);
+    refWithRotationMethods.current && refWithRotationMethods.current.rotateCircleForward();
   };
 
   return(
