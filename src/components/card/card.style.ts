@@ -1,9 +1,24 @@
-import styled from "styled-components";
-import { setDimensions, setFontValues } from "utils/mixins";
+import Button from "components/styled/button/button";
+import styled, { css } from "styled-components";
+import { CardButtonItemTitleType, CardDecorationButtonType, CardDecorationListType } from "types/style.type";
+import { customAntiRotation, customRotation } from "utils/animation.style";
+import { leftTickDesign, rightTickDesign, setDimensions, setFontValues } from "utils/mixins";
 
 const CardBox = styled.div`
   position: relative;
   padding: 59px 0 13px 0;
+  margin: 0 auto;
+  width: 320px;
+
+  @media (min-width: 1440px) {
+    width: 1440px;
+    padding: 170px 0 204px 0;
+
+    overflow: hidden;
+
+    border-left: ${({ theme }) => `1px solid ${theme.color.blackBlue10Opacity}`};
+    border-right: ${({ theme }) => `1px solid ${theme.color.blackBlue10Opacity}`};
+  }
 `;
 
 const CardTopic = styled.h1`
@@ -11,12 +26,56 @@ const CardTopic = styled.h1`
   margin: 0 0 56px;
 
   ${({ theme }) => setFontValues(theme.font.medium, 24, 700)};
+
+  @media (min-width: 1440px) {
+    position: relative;
+    /* position: absolute;
+    top: 170px;
+    left: 0; */
+
+    padding: 0 0 0 80px;
+    margin-bottom: 537px;
+    max-width: 480px;
+    height: 215px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    ${({ theme }) => setFontValues(theme.font.semiHuge, 67)};
+
+    &::before {
+      position: absolute;
+      top: 7px;
+      left: 0;
+
+      ${setDimensions(5, 120)};
+      background-image: ${({ theme }) => `linear-gradient(
+        ${theme.color.blue} 0,
+        ${theme.color.fuchsia} 100%
+      )`};
+
+      content: '';
+    }
+  }
 `;
 
 const CardRange = styled.h2`
   padding: 0 20px;
   margin: 0 0 58px;
   ${({ theme }) => setFontValues(theme.font.semiHuge, 72, 700)};
+
+  @media (min-width: 1440px) {
+    position: absolute;
+    top: 400px;
+    left: 217px;
+    z-index: 10;
+
+    padding: 0;
+    margin: 0;
+    width: 1006px;
+
+    ${({ theme }) => setFontValues(theme.font.huge, 160)};
+  }
 `;
 
 const CardRangeStart = styled.span`
@@ -27,11 +86,23 @@ const CardRangeEnd = styled.span`
   color: ${({ theme }) => theme.color.fuchsia};
 `;
 
+const CardRangeGap = styled.span`
+  display: none;
+
+  @media (min-width: 1440px) {
+    display: inline;
+  }
+`;
+
 const CardDecoration = styled.div`
   position: relative;
   margin-bottom: 10px;
 
   ${setDimensions('100%', 10)};
+
+  & > * {
+    display: none;
+  }
 
   &::after {
     position: absolute;
@@ -43,15 +114,231 @@ const CardDecoration = styled.div`
     opacity: 0.1;
     content: '';
   }
+
+  @media (min-width: 1440px) {
+    position: absolute;
+    top: 215px;
+    left: 452px;
+    z-index: 20;
+
+    ${setDimensions(530)};
+
+    &::after {
+      top: 0;
+      left: 0;
+
+      ${setDimensions(530)};
+      border: ${({ theme }) => `1px solid ${theme.color.blackBlue10Opacity}`};
+      border-radius: 50%;
+
+      background-color: transparent;
+      opacity: 1;
+    }
+
+    & > * {
+      display: initial;
+    }
+  }
+`;
+
+const CardDecorationCross = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  ${setDimensions('100%')};
+  background-color: transparent;
+
+  &::before {
+    position: absolute;
+    top: -100vh;
+    left: 50%;
+
+    ${setDimensions(1,'400vh')};
+    background-color: ${({ theme }) => theme.color.blackBlue10Opacity};
+    content: '';
+  }
+
+  &::after {
+    position: absolute;
+    top: 50%;
+    left: -100vw;
+
+    ${setDimensions('200vw', 1)};
+    background-color: ${({ theme }) => theme.color.blackBlue10Opacity};
+    content: '';
+  }
+`;
+
+const CardDecorationList = styled.ul<CardDecorationListType>`
+  all: revert;
+  display: none;
+  position: relative;
+  z-index: 30;
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  ${setDimensions(530)};
+
+  animation-name: ${({ $startAngle, $endAngle }) => customRotation($startAngle, $endAngle)};
+  animation-duration: ${({ $animationTime }) => `${$animationTime}s`};
+  animation-fill-mode: forwards;
+
+  @media (min-width: 1440px) {
+    display: block;
+  }
+`;
+
+const CardButtonItem = styled.li`
+  position: absolute;
+  top: 265px;
+  left: 265px;
+  z-index: 40;
+
+  padding: 0;
+
+  &.first-position {
+    transform: rotate(300deg) translate(265px) rotate(-300deg);
+  }
+
+  &.second-position {
+    transform: rotate(0deg) translate(265px);
+  }
+
+  &.third-position {
+    transform: rotate(60deg) translate(265px) rotate(-60deg);
+  }
+
+  &.fourth-position {
+    transform: rotate(120deg) translate(265px) rotate(-1200deg);
+  }
+
+  &.fifth-position {
+    transform: rotate(180deg) translate(265px) rotate(-180deg);
+  }
+
+  &.sixth-position {
+    transform: rotate(240deg) translate(265px) rotate(-240deg);
+  }
+`;
+
+// add $isActive to element to show button title
+const CardButtonItemTitle = styled.h3<CardButtonItemTitleType>`
+  display: none;
+
+  ${({ $isActive }) => {
+    if($isActive) {
+      return css<CardButtonItemTitleType>`
+        display: block;
+        margin: 0;
+        position: absolute;
+        top: 13px;
+        left: 63px;
+
+        min-width: 100px;
+        ${({ theme }) => setFontValues(theme.font.medium, 30, 700)};
+      `;
+    }
+  }}
+`;
+
+const CardDecorationButton = styled(Button)<CardDecorationButtonType>`
+  position: relative;
+  transform: translate(-50%, -50%);
+
+  ${setDimensions(6)};
+  background-color: ${({ theme }) => theme.color.blackBlue};
+  border: none;
+  transition: width 0.3s, height 0.3s, background-color 0.3s;
+
+  ${({ $isActive }) => {
+    if($isActive) {
+      return css<CardDecorationButtonType>`
+        ${setDimensions(56)};
+
+        background-color: ${({ theme }) => theme.color.cloudyWhite};
+        border: ${({ theme }) => `1px solid ${theme.color.blackBlueHEX}`};
+
+        color: ${({ theme }) => theme.color.blackBlue};
+        ${({ theme }) => setFontValues(theme.font.medium, 30) };
+
+        &::before {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+
+          content: ${({ $contentValue }) => `"${$contentValue}"` };
+
+          animation-name: ${({ $startAngle, $endAngle }) => customAntiRotation($startAngle, $endAngle)};
+          animation-duration: ${({ $animationTime }) => `${$animationTime}s`};
+          animation-fill-mode: forwards;
+        }
+
+      `;
+    }
+  }}
+
+  &::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    ${setDimensions(30)};
+    content: '';
+  }
+
+  &:hover {
+    ${({ $isActive }) => {
+      if($isActive) {
+        return
+      }
+
+      return css<CardDecorationButtonType>`
+        ${setDimensions(56)};
+
+        background-color: ${({ theme }) => theme.color.cloudyWhite};
+        border: ${({ theme }) => `1px solid ${theme.color.blackBlueHEX}`};
+
+        color: ${({ theme }) => theme.color.blackBlue};
+        ${({ theme }) => setFontValues(theme.font.medium, 30) };
+
+        transition: content 0.3s;
+
+        &::before {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+
+          content: ${({ $contentValue }) => `"${$contentValue}"` };
+
+          transform: translate(-50%, -50%) rotate(${({ $endAngle, $currentAngle }) => $currentAngle ? -$currentAngle : -$endAngle}deg);
+        }
+      `;
+    }}
+  }
 `;
 
 const CardNavigation = styled.div`
   margin: 0 0 0 20px;
   width: 58px;
+
+  @media (min-width: 1440px) {
+    position: absolute;
+    top: 697px;
+    left: 80px;
+    width: 120px
+  }
 `;
 
 const CardNavigationNumbers = styled.p`
   margin: 0 0 11px;
+
+  @media (min-width: 1440px) {
+    margin-bottom: 20px;
+  }
 `;
 
 const CardNavigationButtonList = styled.ul`
@@ -68,25 +355,10 @@ const CardNavigationButtonItem = styled.li`
   padding: 0;
 `;
 
-const Button = styled.button`
-  display: block;
-  position: relative;
-
+const ButtonNavigation = styled(Button)`
   ${setDimensions(25)};
-  padding: 0;
 
-  background-color: transparent;
-  border: ${({ theme }) => `1px solid ${theme.color.blackBlueHEX}`};
-  border-radius: 50%;
-
-  appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-
-  outline: none;
-  text-decoration: none;
-
-  cursor: pointer;
+  border-color:  ${({ theme }) => theme.color.blackBlue};
 
   &::before,
   &::after {
@@ -100,43 +372,33 @@ const Button = styled.button`
     content: '';
   }
 
-  &:hover {
-    background-color: ${({ theme }) => theme.color.white};
-  }
-
   &:disabled {
-    opacity: 0.5;
+    border-color: ${({ theme }) => theme.color.blackBlueHEX};
+
+    &::before,
+    &::after {
+      background-color: ${({ theme }) => theme.color.blackBlueHEX};
+    }
+  }
+
+  @media (min-width: 1440px) {
+    ${setDimensions(50)};
+
+
+    &::before,
+    &::after {
+      ${setDimensions(12, 2)};
+
+    }
   }
 `;
 
-const CardNavigationPrevButton = styled(Button)`
-  &::before {
-    transform: translate(-50%,-50%) rotate(45deg);
-    transform-origin: top left;
-  }
-
-  &::after {
-    top: calc(50% + 1px);
-
-    transform: translate(-50%,-50%) rotate(-45deg);
-    transform-origin: bottom left;
-  }
+const CardNavigationPrevButton = styled(ButtonNavigation)`
+  ${leftTickDesign};
 `;
 
-const CardNavigationNextButton = styled(Button)`
-  &::before {
-    top: calc(50% + 1px);
-
-    transform: translate(-50%,-50%) rotate(45deg);
-    transform-origin: top right;
-  }
-
-  &::after {
-    top: calc(50% - 1px);
-
-    transform: translate(-50%,-50%) rotate(-45deg);
-    transform-origin: bottom right;
-  }
+const CardNavigationNextButton = styled(ButtonNavigation)`
+  ${rightTickDesign};
 `;
 
 const CardPagination = styled.div`
@@ -181,20 +443,83 @@ const CardPaginationInput = styled.input`
   }
 `;
 
+const CardSliderSwiper = styled.div`
+  display: none;
+  z-index: 70;
+
+  & > * {
+    display: none;
+  }
+
+  @media (min-width: 1440px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 1360px;
+    position: absolute;
+    top: 882px;
+    left: 40px;
+
+    & > * {
+      display: initial;
+    }
+  }
+`;
+
+const CardSliderSwiperButton = styled(Button)`
+  position: relative;
+
+  ${setDimensions(40)};
+  border: 0;
+  border-radius: 50%;
+
+  background-color: ${({ theme }) => theme.color.white};
+  box-shadow: 0px 0px 15px rgba(56, 119, 238, 0.1);
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    ${setDimensions(10, 2)};
+    background-color: ${({ theme }) => theme.color.blue};
+
+    content: '';
+  }
+`;
+
+const CardSliderSwiperLeftButton = styled(CardSliderSwiperButton)`
+  ${leftTickDesign};
+`;
+
+const CardSliderSwiperRightButton = styled(CardSliderSwiperButton)`
+  justify-self: end;
+  ${rightTickDesign};
+`;
+
 export {
   CardBox,
   CardTopic,
   CardRange,
   CardRangeStart,
   CardRangeEnd,
+  CardRangeGap,
   CardDecoration,
   CardNavigation,
   CardNavigationNumbers,
   CardNavigationButtonList,
-  CardNavigationButtonItem,
+  CardButtonItem,
   CardNavigationPrevButton,
   CardNavigationNextButton,
   CardPagination,
   CardPaginationDot,
   CardPaginationInput,
+  CardDecorationButton,
+  CardDecorationList,
+  CardDecorationCross,
+  CardNavigationButtonItem,
+  CardButtonItemTitle,
+  CardSliderSwiper,
+  CardSliderSwiperLeftButton,
+  CardSliderSwiperRightButton,
 }

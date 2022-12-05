@@ -55,3 +55,33 @@ export const setFontValues = (size: number | string, height: number | string, we
 export const specificBorder = css`
   ${({ theme }) => `1px solid ${theme.color.lightOutlineTwo}`};
 `;
+
+export const leftTickDesign = css`
+  &::before {
+    transform: translate(-50%,-50%) rotate(45deg);
+    transform-origin: top left;
+  }
+
+  &::after {
+    top: calc(50% + 1px);
+
+    transform: translate(-50%,-50%) rotate(-45deg);
+    transform-origin: bottom left;
+  }
+`;
+
+export const rightTickDesign = css`
+  &::before {
+    top: calc(50% + 1px);
+
+    transform: translate(-50%,-50%) rotate(45deg);
+    transform-origin: top right;
+  }
+
+  &::after {
+    top: calc(50% - 1px);
+
+    transform: translate(-50%,-50%) rotate(-45deg);
+    transform-origin: bottom right;
+  }
+`;

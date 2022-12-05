@@ -36,10 +36,43 @@ const Card = () => {
     <S.CardBox>
       <S.CardTopic>Исторические<br/>даты</S.CardTopic>
       <S.CardRange>
-        <S.CardRangeStart>2015</S.CardRangeStart> <S.CardRangeEnd>2022</S.CardRangeEnd>
+        <S.CardRangeStart>2015</S.CardRangeStart>&nbsp;<S.CardRangeGap>&nbsp;</S.CardRangeGap><S.CardRangeEnd>2022</S.CardRangeEnd>
       </S.CardRange>
-      <S.CardDecoration />
-      <CardSwiper swiperRef={swiperElement} setPaginationNumber={setActivePaginationNumber}/>
+
+      <S.CardDecoration>
+        <p className="visually-hidden">Сменить исторический период</p>
+        <S.CardDecorationCross />
+
+        <S.CardDecorationList $startAngle={0} $endAngle={0} $animationTime={10}>
+          <S.CardButtonItem className="first-position">
+            <S.CardDecorationButton $isActive $contentValue={"1"} $startAngle={0} $endAngle={0} $animationTime={10} type="button">
+              <S.CardButtonItemTitle $isActive>Наука</S.CardButtonItemTitle>
+            </S.CardDecorationButton>
+          </S.CardButtonItem>
+          <S.CardButtonItem className="second-position">
+            <S.CardDecorationButton $contentValue={"2"} $startAngle={0} $endAngle={0} $animationTime={10} type="button"/>
+          </S.CardButtonItem>
+          {/* <S.CardButtonItem className="third-position">
+            <S.CardDecorationButton $contentValue={"3"} type="button"/>
+          </S.CardButtonItem>
+          <S.CardButtonItem className="fourth-position">
+            <S.CardDecorationButton $contentValue={"4"} type="button"/>
+          </S.CardButtonItem>
+          <S.CardButtonItem className="fifth-position">
+            <S.CardDecorationButton $contentValue={"5"} type="button"/>
+          </S.CardButtonItem>
+          <S.CardButtonItem className="sixth-position">
+            <S.CardDecorationButton $contentValue={"6"} type="button"/>
+          </S.CardButtonItem> */}
+        </S.CardDecorationList>
+      </S.CardDecoration>
+
+      <CardSwiper
+        swiperRef={swiperElement}
+        setPaginationNumber={setActivePaginationNumber}
+        hasLeftSwiper
+        hasRightSwiper
+      />
 
       <S.CardNavigation>
         <S.CardNavigationNumbers>
@@ -92,6 +125,12 @@ const Card = () => {
           ''
         }
       </S.CardPagination>
+
+      <S.CardSliderSwiper>
+        <S.CardSliderSwiperLeftButton />
+        <S.CardSliderSwiperRightButton />
+      </S.CardSliderSwiper>
+
     </S.CardBox>
   )
 }

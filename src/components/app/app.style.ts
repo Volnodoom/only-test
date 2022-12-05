@@ -139,7 +139,7 @@ button,
 `;
 
 const Container = styled.main`
-  width: 320px;
+  display: flex;
 `;
 
 export {

@@ -10,3 +10,20 @@ export type ThemeParameters = {
 };
 
 export interface CombinedHTMLSwiper extends HTMLElement {swiper: SwiperCore};
+
+export type CardDecorationListType = {
+  $startAngle: number,
+  $endAngle: number,
+  $animationTime: number,
+  $currentAngle?: number,
+}
+
+export type CardDecorationButtonType = {
+  $contentValue: string,
+  $isActive?: boolean,
+} & CardDecorationListType;
+
+export type CardButtonItemTitleType = {
+  $isActive?: boolean,
+}
+
