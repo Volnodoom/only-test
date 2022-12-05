@@ -11,19 +11,28 @@ export type ThemeParameters = {
 
 export interface CombinedHTMLSwiper extends HTMLElement {swiper: SwiperCore};
 
-export type CardDecorationListType = {
+export type MenuListType = {
   $startAngle: number,
   $endAngle: number,
   $animationTime: number,
   $currentAngle?: number,
 }
 
-export type CardDecorationButtonType = {
-  $contentValue: string,
-  $isActive?: boolean,
-} & CardDecorationListType;
+export type MenuDotType = {
+  $contentValue: number,
+  $isChecked?: boolean,
+} & MenuListType;
 
-export type CardButtonItemTitleType = {
-  $isActive?: boolean,
+export type MenuTitleType = {
+  $isChecked?: boolean,
 }
 
+export type SingleInfo = {
+  year: number,
+  content: string,
+}
+
+export type MockDataType = {
+  field: string,
+  scope: SingleInfo[],
+}
