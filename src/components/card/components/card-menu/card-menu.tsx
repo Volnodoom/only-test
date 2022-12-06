@@ -1,4 +1,4 @@
-import { ChangeEvent, forwardRef, Ref, useEffect, useImperativeHandle, useState } from "react";
+import { ChangeEvent, forwardRef, memo, Ref, useEffect, useImperativeHandle, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setActiveIndex, setPreviousIndex } from "store/reducer";
@@ -163,4 +163,4 @@ const CardMenu = forwardRef((props, ref: Ref<RefObjectType>) => {
   )
 })
 
-export default CardMenu;
+export default memo(CardMenu);

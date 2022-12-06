@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useSelector } from "react-redux";
 import * as S from "./card-range.style";
 import { useInterval } from "../../../../hooks";
@@ -23,10 +23,9 @@ const CardRange = () => {
   return (
     <S.CardRange>
       <S.CardRangeStart>{startDateAnimation}</S.CardRangeStart>
-      &nbsp;<S.CardRangeGap>&nbsp;</S.CardRangeGap>
       <S.CardRangeEnd>{endDateAnimation}</S.CardRangeEnd>
     </S.CardRange>
   )
 }
 
-export default CardRange;
+export default memo(CardRange);

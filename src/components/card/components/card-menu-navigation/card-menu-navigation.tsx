@@ -5,6 +5,7 @@ import * as S from "./card-menu-navigation.style";
 import { RefObjectType } from "types/style.type";
 import { useSelector } from "react-redux";
 import { getActiveIndex } from "store/selectors";
+import { memo } from "react";
 
 type CardMenuNavigationType = {
   refWithRotationMethods: React.MutableRefObject<RefObjectType | null>,
@@ -61,4 +62,4 @@ const CardMenuNavigation = ({refWithRotationMethods}: CardMenuNavigationType) =>
   )
 }
 
-export default CardMenuNavigation;
+export default memo(CardMenuNavigation);

@@ -2,8 +2,10 @@ import styled from "styled-components";
 import { setFontValues } from "utils/mixins";
 
 const CardRange = styled.h2`
-  padding: 0 20px;
-  margin: 0 0 58px;
+  position: inherit;
+  min-height: 73px;
+  padding: 0;
+  margin: 0 20px 58px;
   ${({ theme }) => setFontValues(theme.font.semiHuge, 72, 700)};
 
   @media (min-width: 1440px) {
@@ -21,24 +23,23 @@ const CardRange = styled.h2`
 `;
 
 const CardRangeStart = styled.span`
+  position: absolute;
+  top: 0;
+  left: 0;
+
   color: ${({ theme }) => theme.color.blue};
 `;
 
 const CardRangeEnd = styled.span`
+  position: absolute;
+  top: 0;
+  right: 0;
+
   color: ${({ theme }) => theme.color.fuchsia};
-`;
-
-const CardRangeGap = styled.span`
-  display: none;
-
-  @media (min-width: 1440px) {
-    display: inline;
-  }
 `;
 
 export {
   CardRange,
   CardRangeStart,
   CardRangeEnd,
-  CardRangeGap,
 }
