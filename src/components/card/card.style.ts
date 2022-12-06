@@ -27,9 +27,6 @@ const CardTopic = styled.h1`
 
   @media (min-width: 1440px) {
     position: relative;
-    /* position: absolute;
-    top: 170px;
-    left: 0; */
 
     padding: 0 0 0 80px;
     margin-bottom: 537px;

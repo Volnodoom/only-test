@@ -48,7 +48,8 @@ const Card = () => {
 
     if(
         swiperElement.current
-        && swiperElement.current.swiper.activeIndex === (numberOfSlides - SLIDER_LIMIT)
+        &&
+        swiperElement.current.swiper.activeIndex === (numberOfSlides - SLIDER_LIMIT)
       ) {
       setIsNextButtonVisible(false);
     }
