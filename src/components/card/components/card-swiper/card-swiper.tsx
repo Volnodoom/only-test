@@ -8,15 +8,17 @@ import './card-swiper.css'
 import * as S from './card-swiper.style';
 import { CombinedHTMLSwiper } from 'types/style.type';
 import { MockData } from 'utils/mock-data';
+import { useSelector } from 'react-redux';
+import { getActiveIndex } from 'store/selectors';
 
 type CardSwiperType = {
   swiperRef: React.MutableRefObject<CombinedHTMLSwiper | null>,
   hasLeftSwiper: boolean,
   hasRightSwiper: boolean,
-  activeMenuSection: number,
 }
 
-const CardSwiper = ({swiperRef, hasLeftSwiper, hasRightSwiper, activeMenuSection}: CardSwiperType) => {
+const CardSwiper = ({swiperRef, hasLeftSwiper, hasRightSwiper}: CardSwiperType) => {
+  const activeIndex = useSelector(getActiveIndex);
 
   return(
     <Swiper
@@ -41,7 +43,7 @@ const CardSwiper = ({swiperRef, hasLeftSwiper, hasRightSwiper, activeMenuSection
       }
     >
       {
-        MockData[activeMenuSection].scope
+        MockData[activeIndex].scope
           .map((line, index) => (
             <SwiperSlide className='custom-slider' key={`${line.year}-uniq-${index}`}>
               <S.CardSwiperTitle>{line.year}</S.CardSwiperTitle>

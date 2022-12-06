@@ -1,23 +1,25 @@
 import { ChangeEvent, forwardRef, Ref, useEffect, useImperativeHandle, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setActiveIndex, setPreviousIndex } from "store/reducer";
+import { getActiveIndex } from "store/selectors";
 import { RefObjectType } from "types/style.type";
 import { COUNTER_CLOCK_POSITIVE_ROTATION_LIMIT, ANIMATION_TIME, MenuSectionClassNames, MENU_LIMIT, ONE, PositionValues, SIXTY_DEGREE, COUNTER_CLOCK_NEGATIVE_ROTATION_LIMIT } from "utils/const";
 import { MockData } from "utils/mock-data";
 import { reversePositionValue } from "utils/utils";
 import * as S from "./card-menu.style";
 
-type CardMenuType = {
-  activeMenuSection: number,
-  setMenuSection: React.Dispatch<React.SetStateAction<number>>,
-}
+const CardMenu = forwardRef((props, ref: Ref<RefObjectType>) => {
+  const dispatch = useDispatch();
+  const activeIndex = useSelector(getActiveIndex);
 
-const CardMenu = forwardRef(({activeMenuSection, setMenuSection}: CardMenuType, ref: Ref<RefObjectType>) => {
   const [rotationStart, setRotationStart] = useState(0);
   const [rotationEnd, setRotationEnd] = useState(0);
   const [timeAnimation, setTimeAnimation] = useState(0);
   const [prevActiveMenuNumber, setPrevActiveMenuNumber] = useState(1);
   const [isMenuTitleVisible, setIsMenuTitleVisible] = useState(true);
   const menuElementsNumber = MockData.length;
-  let activeMenuNumber = activeMenuSection + ONE;
+  let activeMenuNumber = activeIndex + ONE;
 
   useEffect(() => {
     const handleAnimationEnd = () => {
@@ -35,16 +37,19 @@ const CardMenu = forwardRef(({activeMenuSection, setMenuSection}: CardMenuType, 
       setRotationEnd(prevValue => prevValue + SIXTY_DEGREE);
       setTimeAnimation(ANIMATION_TIME);
       setPrevActiveMenuNumber(prevValue => --prevValue);
-      setMenuSection(prevValue => --prevValue);
 
+      dispatch(setActiveIndex(activeIndex - ONE));
+      dispatch(setPreviousIndex(activeIndex));
     },
     rotateCircleForward: () => {
       setRotationStart(rotationEnd);
       setRotationEnd(prevValue => prevValue - SIXTY_DEGREE);
       setTimeAnimation(ANIMATION_TIME);
       setPrevActiveMenuNumber(prevValue => ++prevValue);
-      setMenuSection(prevValue => ++prevValue);
-    }
+
+      dispatch(setActiveIndex(activeIndex + ONE));
+      dispatch(setPreviousIndex(activeIndex));
+    },
   }))
 
   const handleMenuChange = (evt: ChangeEvent) => {
@@ -52,8 +57,9 @@ const CardMenu = forwardRef(({activeMenuSection, setMenuSection}: CardMenuType, 
     const indexNumber = Number(elementNumber) - ONE;
     const prevIndexNumber = prevActiveMenuNumber - ONE;
 
-    setMenuSection(indexNumber);
+    dispatch(setActiveIndex(indexNumber));
     setIsMenuTitleVisible(false);
+    dispatch(setPreviousIndex(prevIndexNumber));
 
     activeMenuNumber = Number(elementNumber);
     const positiveDifference = activeMenuNumber - prevActiveMenuNumber;
@@ -87,10 +93,9 @@ const CardMenu = forwardRef(({activeMenuSection, setMenuSection}: CardMenuType, 
         setPrevActiveMenuNumber(activeMenuNumber);
         return;
       } else if(isPositiveDifference && positiveDifference > COUNTER_CLOCK_POSITIVE_ROTATION_LIMIT) {
-        setRotationStart(rotationEnd);
-
         const reverseValue = reversePositionValue(activeMenuNumber);
 
+        setRotationStart(rotationEnd);
         setRotationEnd(previousRotationEnd => previousRotationEnd + (reverseValue + prevIndexNumber)*SIXTY_DEGREE);
         setTimeAnimation(reverseValue*ANIMATION_TIME);
 
@@ -106,10 +111,9 @@ const CardMenu = forwardRef(({activeMenuSection, setMenuSection}: CardMenuType, 
         return;
       }
       else if(isNegativeDifference) {
-        setRotationStart(rotationEnd);
-
         const reverseValue = reversePositionValue(prevActiveMenuNumber);
 
+        setRotationStart(rotationEnd);
         setRotationEnd(previousRotationEnd => previousRotationEnd - (reverseValue + indexNumber)*SIXTY_DEGREE);
         setTimeAnimation(activeMenuNumber*ANIMATION_TIME);
 
@@ -154,7 +158,7 @@ const CardMenu = forwardRef(({activeMenuSection, setMenuSection}: CardMenuType, 
         ))
       }
     </S.MenuList>
-    <S.MenuItemTitle $isChecked={isMenuTitleVisible}>{MockData[activeMenuSection].field}</S.MenuItemTitle>
+    <S.MenuItemTitle $isChecked={isMenuTitleVisible}>{MockData[activeIndex].field}</S.MenuItemTitle>
   </S.Menu>
   )
 })

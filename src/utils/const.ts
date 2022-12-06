@@ -15,8 +15,10 @@ export const ONE_AND_EIGHTY_DEGREE = 180;
 export const TWO_AND_FORTY_DEGREE = 240;
 export const TREE_HUNDRED_DEGREE = 300;
 export const AUTO = 'auto';
+export const NUMBER_CHANGE_TIMER = 10;
 export const PREV_BUTTON_CLASS = 'prev-button-class-name';
 export const NEXT_BUTTON_CLASS = 'next-button-class-name';
+export const ANIMATION_SLICE = 'ANIMATION_SLICE';
 
 export const TypeOfData = {
   STRING: 'string',

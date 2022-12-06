@@ -41,3 +41,8 @@ export type RefObjectType = {
   rotateCircleBack: () => void,
   rotateCircleForward: () => void,
 }
+
+export type StateType = {
+  previousIndex: number,
+  activeIndex: number,
+}
